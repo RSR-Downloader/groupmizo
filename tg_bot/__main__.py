@@ -19,49 +19,23 @@ from tg_bot.modules.helper_funcs.chat_status import is_user_admin
 from tg_bot.modules.helper_funcs.misc import paginate_modules
 
 PM_START_TEXT = """
-Hi {}, my name is {}! I'm a group manager bot maintained by [this wonderful person](tg://user?id={}).
-I'm built in python3, using the python-telegram-bot library, and am fully [opensource](https://github.com/PaulSonOfLars/tgbot) you can find what makes me tick \
-[here](github.com/SpEcHiDe/PSonOfLars_Marie)!
+Hi {}, ka hming chu *{}* ani.Kei hi group ilo zangkhai zawk nan a enkawl pui thei che Bot ka ni e,min hman dan tur i hriat duh chuan /help tih hi click rawh.
 
-You can find the list of available commands with /help.
 
-Using standard [Marie](http://telegram.dog/BanhammerMarie_bot) is always gonna be easier.
-Perks:
-- latest features
-- it's free
-- biggest list of users for any /info commands
-- the database will always be correctly formatted
-- bugs will always be fixed ASAP
-- no need to maintain anything yourself
 
-Also, no support can be given for any [clones](https://telegram.dog/MidukkiBot); source might be changed and that's not [my](https://telegram.dog/PaulSonOfLars) problem.
-**Keep in mind that any changes you DO do to the source have to be on github, as per the license.**
 
-If you're enjoying using me, and/or would like to help me survive in the wild, hit /donate to help fund/upgrade my VPS!
 """
 
 HELP_STRINGS = """
-Hey there! My name is *{}*.
-I'm a modular group management bot with a few fun extras! Have a look at the following for an idea of some of \
-the things I can help you with.
+Hello!.
+Kei hi ilo zangkhai zawk nan a group emkawl pui thei che Bot ka ni a,link hi click la i awmna group ah min add la,min admin tir dawn nia. https://telegram.me/mami_mi_bot?startgroup=chat  chuan i group ah khan /filter tih hmang hian command i set ang,engtirnan - mi in hi ti in lo chat ta se hello min tih tir i duh chuan  /filter hi hello ti in group ah khan message ilo thawn ang,an hming sawi tel tur pawn min set thei bawk,sawi kim vek sen aniloa,hriatbelh duh i neih chuan min siam tu @rsrmusic hneh ah hian i zawt thei ang.
 
-*Main* commands available:
- - /start: start the bot
- - /help: PM's you this message.
- - /help <module name>: PM's you info about that module.
- - /donate: information about how to donate!
- - /settings:
-   - in PM: will send you your settings for all supported modules.
-   - in a group: will redirect you to pm, with all that chat's settings.
 
 {}
 And the following:
 """.format(dispatcher.bot.first_name, "" if not ALLOW_EXCL else "\nAll commands can either be used with / or !.\n")
 
-DONATE_STRING = """Heya, glad to hear you want to donate!
-It took lots of work for [my creator](https://telegram.dog/SonOfLars) to get me to where I am now, and every donation helps \
-motivate him to make me even better. All the donation money will go to a better VPS to host me, and/or beer \
-(see his bio!). He's just a poor student, so every little helps!"""
+DONATE_STRING = """ Donation i phal ang zah zah kha lawm tak in kan pawm e😊 @rsrmusic"""
 
 IMPORTED = {}
 MIGRATEABLE = []
@@ -129,7 +103,8 @@ def send_help(chat_id, text, keyboard=None):
 def test(bot: Bot, update: Update):
     # pprint(eval(str(update)))
     # update.effective_message.reply_text("Hola tester! _I_ *have* `markdown`", parse_mode=ParseMode.MARKDOWN)
-    update.effective_message.reply_text("This person edited a message")
+    update.effective_message.reply_text("Message edit ani.
+")
     print(update.effective_message)
 
 
@@ -158,7 +133,7 @@ def start(bot: Bot, update: Update, args: List[str]):
                 PM_START_TEXT.format(escape_markdown(first_name), escape_markdown(bot.first_name), OWNER_ID),
                 parse_mode=ParseMode.MARKDOWN)
     else:
-        update.effective_message.reply_text("Yo, whadup?")
+        update.effective_message.reply_text("Hello,i tha maw?")
 
 
 # for test purposes
@@ -230,11 +205,11 @@ def help_button(bot: Bot, update: Update):
         bot.answer_callback_query(query.id)
         query.message.delete()
     except BadRequest as excp:
-        if excp.message == "Message is not modified":
+        if excp.message == "Message ka siam danglam theilo,admin ah min dah angai":
             pass
         elif excp.message == "Query_id_invalid":
             pass
-        elif excp.message == "Message can't be deleted":
+        elif excp.message == "Message ka delete theilo,admin ah min dah angai":
             pass
         else:
             LOGGER.exception("Exception in help buttons. %s", str(query.data))
@@ -248,7 +223,7 @@ def get_help(bot: Bot, update: Update):
     # ONLY send help in PM
     if chat.type != chat.PRIVATE:
 
-        update.effective_message.reply_text("Contact me in PM to get the list of possible commands.",
+        update.effective_message.reply_text("Command theih dan i hriat duh chuan min rawn private rawh.",
                                             reply_markup=InlineKeyboardMarkup(
                                                 [[InlineKeyboardButton(text="Help",
                                                                        url="t.me/{}?start=help".format(
